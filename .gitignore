@@ -1,5 +1,3 @@
 # These are files local to my machine that I don't want messing up the GitHub repo.
 .DS_Store
 .vscode
-# A file where I keep notes / temp stuff that isn't important to the repo.
-Temp
