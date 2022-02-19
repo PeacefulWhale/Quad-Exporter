@@ -1,6 +1,22 @@
 # Quad Exporter
 
+<img src="App/Images/Logo.png" width=25% height=25% align="left">
+
 The goal of this program is to provide an alternative to the program `Tri-Exporter`, which hasn't been updated in a very, very long time.
+
+## Contributors
+
+**Hoed Cosmere:** Owner of the Quad-Exporter repository.
+
+**Potato/Mewlaki:** Hoed's cat, Maine Coon mascot, and giver of softness.
+
+<br clear="left"/>
+
+## Support
+
+- Send isk to `Hoed Cosmere` in game (with the reason being `quad-exporter`) to get your name added here as thanks!
+- Contribute to the repository to get your name added here as thanks!
+- I'll also add your name to the loading splash screen if you do either of the above in significant quantity or quality!
 
 ## Usage
 
@@ -63,9 +79,3 @@ There are a lot more improvements I could make that aren't up here! If you think
   - Send isk to `Hoed Cosmere` in game (with the reason being `quad-exporter`) to get your name added here as thanks!
   - Contribute to the repository to get your name added here as thanks!
   - I'll also add your name to the loading splash screen if you do either of the above in significant quantity or quality!
-
-## Contributors
-
-**Hoed Cosmere:** Owner of the Quad-Exporter repository.
-
-**Potato/Mewlaki:** Hoed's cat, Maine Coon mascot, and giver of softness.
