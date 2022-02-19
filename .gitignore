@@ -1,3 +1,9 @@
 # These are files local to my machine that I don't want messing up the GitHub repo.
 .DS_Store
 .vscode
+# My personal preference, the program should create it's own at startup.
+App/pref
+# Notes and test stuff are kept here, so they aren't a part of the repo.
+Temp
+# You'll have to build your own pycache, sorry!
+__pycache__

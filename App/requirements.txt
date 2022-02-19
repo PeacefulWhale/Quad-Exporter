@@ -1,0 +1,4 @@
+# Standard libaries such as os, functools, and even tkinter don't need to have requirements.
+# Make sure you have them though! And that they're up to date!
+cairosvg >= 2.5.2
+PIL >= 9.0.1
