@@ -7,3 +7,5 @@ App/pref
 Temp
 # You'll have to build your own pycache, sorry!
 __pycache__
+# This is so I can build the app binary.
+QuadExporter.spec
