@@ -53,7 +53,7 @@ def main():
                     enabled.append(line)
         print(f"Enabled File Types: {enabled}")
     except:
-        warn(root, "Cannot create new user preference file.\nWrite privleges may be needed.")
+        warn(root, "Cannot open 'enabled' preference file")
     try:
 
         with open(savedPaths, "r") as file:

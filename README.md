@@ -75,6 +75,7 @@ There are a lot more improvements I could make that aren't up here! If you think
 - [Lucide](https://github.com/lucide-icons/lucide) for the icon pack!
 - [Pillow](https://pillow.readthedocs.io/en/stable/) for their image library!
 - [CairoSVG](https://cairosvg.org) for their SVG Library!
+- [VLC](https://www.videolan.org) for their video player!
 - Your support!
   - Send isk to `Hoed Cosmere` in game (with the reason being `quad-exporter`) to get your name added here as thanks!
   - Contribute to the repository to get your name added here as thanks!

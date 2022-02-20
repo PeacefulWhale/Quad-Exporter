@@ -7,10 +7,25 @@ from fileSys import *
 from QEHelper import *
 from collections import defaultdict
 import shutil
+import vlc
 
 # All extensions
 extensions = ("ALL FILES", ".gr2", ".black", ".static", ".fsdbinary", ".json", ".xml", ".yaml", ".prs", ".bnk", ".wem", ".jpg", ".dds", ".png", ".webm", ".txt", ".py", ".gsf", ".srt", ".pathdata", ".region", ".pickle", ".css", ".tri")
 icons = ("files", "box", "file-digit", "file-digit", "file-digit", "file-code", "file-code", "file-code", "file-input", "music", "music", "image", "image", "image", "youtube", "file-text", "file-code", "file-code", "message-circle", "map", "map", "file-digit", "file-code", "box")
+
+
+class VideoPlayer():
+    # I'm just sticking this here so I don't forget it.
+    # TODO:
+    # Add all functionality lol.
+    def __init__(self, root: tk.Tk, videoFile: str = "", isVideo: bool = False, isAudio: bool = False, **kwargs):
+        super(VideoPlayer, self).__init__(**kwargs)
+        self.root = root
+        # The path to the video to display.
+        self.videoFile = videoFile
+        # Whether or not we have to process video and/or audio.
+        self.isVideo = isVideo
+        self.isAudio = isAudio
 
 
 def CreateToolTip(widget, text):
