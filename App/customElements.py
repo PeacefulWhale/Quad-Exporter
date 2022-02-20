@@ -9,8 +9,8 @@ from collections import defaultdict
 import shutil
 
 # All extensions
-extensions = ("ALL FILES", ".gr2", ".black", ".static", ".fsdbinary", ".json", ".xml", ".yaml", ".prs", ".bnk", ".wem", ".jpg", ".dds", ".png", ".webm", ".txt", ".py", ".gsf", ".srt", ".pathdata", ".region", ".pickle", ".css")
-icons = ("files", "file-digit", "file-digit", "file-digit", "file-digit", "file-code", "file-code", "file-code", "file-input", "music", "music", "image", "image", "image", "youtube", "file-text", "file-code", "file-code", "message-circle", "map", "map", "file-digit", "file-code")
+extensions = ("ALL FILES", ".gr2", ".black", ".static", ".fsdbinary", ".json", ".xml", ".yaml", ".prs", ".bnk", ".wem", ".jpg", ".dds", ".png", ".webm", ".txt", ".py", ".gsf", ".srt", ".pathdata", ".region", ".pickle", ".css", ".tri")
+icons = ("files", "box", "file-digit", "file-digit", "file-digit", "file-code", "file-code", "file-code", "file-input", "music", "music", "image", "image", "image", "youtube", "file-text", "file-code", "file-code", "message-circle", "map", "map", "file-digit", "file-code", "box")
 
 
 def CreateToolTip(widget, text):
@@ -66,7 +66,10 @@ class ExportWindow(tk.Frame):
         self.imageDict = {}
         global extensions
         global icons
-        for ext, icon in zip(extensions, icons):
+        zipped = zip(extensions[1:-1], icons[1:-1])
+        zipped = sorted(zipped, key=lambda x: x[1])
+        zipped.insert(0, (extensions[0], icons[0]))
+        for ext, icon in zipped:
             self.imageDict[ext] = getSVG("Images/icons/" + icon + ".svg")
             # Also load Extension Selection.
             self.extensionSelection.insert("", "end", text=ext, open=True, image=self.imageDict[ext])

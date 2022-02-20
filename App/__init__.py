@@ -14,9 +14,30 @@ savedPaths = ""
 enabled = []
 
 
+def savePaths():
+    global resPath, savedPaths, indexPath
+    # Save the data.
+    with open(savedPaths, "w") as file:
+        file.write(resPath + "\n")
+        file.write(indexPath + "\n")
+
+
+def resMenu(root: tk.Tk):
+    global resPath
+    resPath = getCachePopUp(root)
+    savePaths()
+
+
+def indexMenu(root: tk.Tk):
+    global indexPath
+    indexPath = getIndexPopUp(root)
+    savePaths()
+
+
 def main():
     # Some variables for later
     global resPath, savedPaths, indexPath
+    savedPaths = os.path.dirname(os.path.realpath(__file__)) + "/pref/savedPaths.txt"
     # Create the main window.
     root = tk.Tk()
     root.title("Quad-Exporter")
@@ -25,6 +46,16 @@ def main():
     # root.state("zoomed")
     # Load Preferences
     try:
+        with open(os.path.dirname(os.path.realpath(__file__)) + "/pref/enabled.txt") as file:
+            for line in file.readlines():
+                line = line.strip()
+                if len(line) > 0 and line[0] != "#":
+                    enabled.append(line)
+        print(f"Enabled File Types: {enabled}")
+    except:
+        warn(root, "Cannot create new user preference file.\nWrite privleges may be needed.")
+    try:
+
         with open(savedPaths, "r") as file:
             resPath = file.readline().strip()
             indexPath = file.readline().strip()
@@ -40,9 +71,7 @@ def main():
     if indexPath == "" or not os.path.isfile(indexPath):
         indexPath = getIndexPopUp(root)
     # Save the data.
-    with open(savedPaths, "w") as file:
-        file.write(resPath + "\n")
-        file.write(indexPath + "\n")
+    savePaths()
     # Check to see if we can open the folder.
     # Open the index file and create our folder.
     rootDir = parseIndex(root, indexPath, resPath, enabled)
@@ -75,17 +104,20 @@ def main():
     root.rowconfigure(0, weight=20)
     root.rowconfigure(1, weight=1)
 
+    # Menu Commands.
+    top = root.winfo_toplevel()
+    root.menuBar = tk.Menu(top)
+    top['menu'] = root.menuBar
+
+    root.subMenu = tk.Menu(root.menuBar)
+    root.menuBar.add_cascade(label='Path Options', menu=root.subMenu)
+    root.subMenu.add_command(label='Select Res Path', command=partial(resMenu, root))
+    root.subMenu.add_command(label='Select Index Path', command=partial(indexMenu, root))
+
     # Finally call the mainloop.
     root.mainloop()
 
 
 # In case we do multithreading / multiprocessing.
 if __name__ == "__main__":
-    with open(os.path.dirname(os.path.realpath(__file__)) + "/pref/enabled.txt") as file:
-        for line in file.readlines():
-            line = line.strip()
-            if len(line) > 0 and line[0] != "#":
-                enabled.append(line)
-    print(f"Enabled File Types: {enabled}")
-    savedPaths = os.path.dirname(os.path.realpath(__file__)) + "/pref/savedPaths.txt"
     main()

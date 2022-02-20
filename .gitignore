@@ -2,7 +2,7 @@
 .DS_Store
 .vscode
 # My personal preference, the program should create it's own at startup.
-App/pref
+App/pref/savedPaths.txt
 # Notes and test stuff are kept here, so they aren't a part of the repo.
 Temp
 # You'll have to build your own pycache, sorry!
