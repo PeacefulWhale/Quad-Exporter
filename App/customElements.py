@@ -81,7 +81,7 @@ class ExportWindow(tk.Frame):
         self.imageDict = {}
         global extensions
         global icons
-        zipped = zip(extensions[1:-1], icons[1:-1])
+        zipped = zip(extensions[1:-1], icons[1:])
         zipped = sorted(zipped, key=lambda x: x[1])
         zipped.insert(0, (extensions[0], icons[0]))
         for ext, icon in zipped:
