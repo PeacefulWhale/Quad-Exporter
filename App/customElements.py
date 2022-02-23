@@ -10,22 +10,65 @@ import shutil
 import vlc
 
 # All extensions
-extensions = ("ALL FILES", ".gr2", ".black", ".static", ".fsdbinary", ".json", ".xml", ".yaml", ".prs", ".bnk", ".wem", ".jpg", ".dds", ".png", ".webm", ".txt", ".py", ".gsf", ".srt", ".pathdata", ".region", ".pickle", ".css", ".tri")
-icons = ("files", "box", "file-digit", "file-digit", "file-digit", "file-code", "file-code", "file-code", "file-input", "music", "music", "image", "image", "image", "youtube", "file-text", "file-code", "file-code", "message-circle", "map", "map", "file-digit", "file-code", "box")
+extensions = ("ALL FILES", ".gr2", ".black", ".static", ".fsdbinary", ".json", ".xml", ".yaml", ".prs", ".bnk", ".wem", ".jpg", ".dds", ".png", ".webm", ".txt", ".py", ".gsf", ".srt", ".pathdata", ".region", ".pickle", ".css", ".tri", ".mp4", ".mp3")
+icons = ("files", "box", "file-digit", "file-digit", "file-digit", "file-code", "file-code", "file-code", "file-input", "music", "music", "image", "image", "image", "youtube", "file-text", "file-code", "file-code", "message-circle", "map", "map", "file-digit", "file-code", "box", "youtube", "music")
 
 
 class VideoPlayer():
     # I'm just sticking this here so I don't forget it.
     # TODO:
     # Add all functionality lol.
-    def __init__(self, root: tk.Tk, videoFile: str = "", isVideo: bool = False, isAudio: bool = False, **kwargs):
+    def __init__(self, root: tk.Tk, videoFile: str = "", **kwargs):
         super(VideoPlayer, self).__init__(**kwargs)
         self.root = root
         # The path to the video to display.
         self.videoFile = videoFile
-        # Whether or not we have to process video and/or audio.
-        self.isVideo = isVideo
-        self.isAudio = isAudio
+        
+        # Get images for buttons.
+        self.playImg = getSVG("Images/icons/play.svg")
+        self.stopImg = getSVG("Images/icons/pause.svg")
+        self.volumeImg = [getSVG("Images/icons/volume-2.svg"),
+                          getSVG("Images/icons/volume-1.svg"),
+                          getSVG("Images/icons/volume.svg")]
+        self.mutedImg = getSVG("Images/icons/volume-x.svg")
+
+        # Set up buttons / button frames.
+        self.volume = 100
+        self.bottons = ttk.Frame(self)
+        self.playBotton = ttk.Button(self.bottons, image=self.stopImg, command=self.playToggle)
+        self.volumeBotton = ttk.Button(self.bottons, image=self.volumeImg[0], command=self.muteToggle)
+        self.stopped = False
+        self.muted = False
+
+        self.Instance = vlc.Instance()
+        self.player = self.Instance.media_player_new()
+
+
+    def getVolumeImage(self):
+        if self.volume >= 66.66:
+            return self.volumeImg[0]
+        elif self.volume >= 33.33:
+            return self.volumeImg[1]
+        else:
+            return self.volumeImg[2]
+
+    def playToggle(self):
+        if self.stopped:
+            # Start playing again.
+            self.playBotton.configure(image=self.stopImg)
+        else:
+            # Stop playing.
+            self.playBotton.configure(image=self.playImg)
+        self.stopped = not self.stopped
+
+    def muteToggle(self):
+        if self.muted:
+            # Unmute the audio / video.
+            self.volumeBotton.configure(image=self.volumeImg[0])
+        else:
+            # Set up the volume again properly
+            self.volumeBotton.configure(image=self.mutedImg)
+        self.muted = not self.muted
 
 
 def CreateToolTip(widget, text):
