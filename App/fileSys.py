@@ -1,13 +1,20 @@
 import os
 
 
+def _cleanPath(filepath: str):
+    illegalChars = "<>:\"/\\|?*\'"
+    for char in illegalChars:
+        filepath = filepath.replace(char, "")
+    return filepath
+
+
 class FileDir:
     def __init__(self, resPath: str, parent: "FileDir" = None, directory: str = "", fullPath: str = "", enabled: list = []):
         self.resPath = resPath
         self.enabled = enabled
-        self.fullPath = fullPath
+        self.fullPath = _cleanPath(fullPath)
         self.parent = parent
-        self.directory = directory
+        self.directory = _cleanPath(directory)
         # Children directories.
         self.children = []
         # Children Files.
@@ -19,6 +26,8 @@ class FileDir:
     def add(self, child: str, truePath: str, size: int):
         # Take a fileSys item and add it to the current fileSys item.
         # Create new fileSys items if needed.
+        child = _cleanPath(child)
+        truePath = _cleanPath(truePath)
         if (child.startswith(self.directory)):
             dirs = child.removeprefix(self.directory).split('/')
             # Get the name of the file.
@@ -56,13 +65,14 @@ class FileDir:
 
 class FileItem():
     def __init__(self, path: str, truePath: str, fullPath: str, size: int = 0):
-        self.path = path
-        self.truePath = truePath
+        self.path = _cleanPath(path)
+        self.truePath = _cleanPath(truePath)
         self.size = size
-        self.fullPath = fullPath
+        self.fullPath = _cleanPath(fullPath)
         self.fileExt = os.path.splitext(self.path)[1]
 
     def convert(self, dest: str):
+        dest = _cleanPath(dest)
         # This is not going to be a fun function to work through... That's for sure...
         # TODO:
         # GR2 -> 3D File Formats
