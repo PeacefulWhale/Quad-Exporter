@@ -1,8 +1,13 @@
 import os
+# TODO:
+# I need to rework how this system functions.
+# I should pass a list of strings instead of one string seperated by '/'
+# This way I can remove illegal '/' characters easily.
 
 
 def _cleanPath(filepath: str):
-    illegalChars = "<>:\"/\\|?*\'"
+    # This is the only illegal character that is currently causing problems to my knowledge.
+    illegalChars = ":"
     for char in illegalChars:
         filepath = filepath.replace(char, "")
     return filepath
