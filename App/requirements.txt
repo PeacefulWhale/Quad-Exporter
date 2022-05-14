@@ -2,4 +2,3 @@
 # Make sure you have them though! And that they're up to date!
 cairosvg >= 2.5.2
 PIL >= 9.0.1
-vlc >= 3.0.12118

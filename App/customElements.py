@@ -7,7 +7,6 @@ from fileSys import *
 from QEHelper import *
 from collections import defaultdict
 import shutil
-import vlc
 
 # All extensions
 extensions = ("ALL FILES", ".gr2", ".black", ".static", ".fsdbinary", ".json", ".xml", ".yaml", ".prs", ".bnk", ".wem", ".jpg", ".dds", ".png", ".webm", ".txt", ".py", ".gsf", ".srt", ".pathdata", ".region", ".pickle", ".css", ".tri", ".mp4", ".mp3")
@@ -39,9 +38,6 @@ class VideoPlayer():
         self.volumeBotton = ttk.Button(self.bottons, image=self.volumeImg[0], command=self.muteToggle)
         self.stopped = False
         self.muted = False
-
-        self.Instance = vlc.Instance()
-        self.player = self.Instance.media_player_new()
 
 
     def getVolumeImage(self):
