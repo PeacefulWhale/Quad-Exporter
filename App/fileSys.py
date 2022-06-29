@@ -87,6 +87,7 @@ class FileItem():
 
         # Easy case, file to its own file type:
         if self.fileExt == os.path.split(dest)[1]:
-            with open(self.truePath, "rb") as bytes:
-                with open(dest, "wb") as output:
-                    output.write(bytes)
+            if os.path.exists(self.truePath):
+                with open(self.truePath, "rb") as bytes:
+                    with open(dest, "wb") as output:
+                        output.write(bytes)

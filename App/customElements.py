@@ -223,7 +223,7 @@ class PreviewWindow(tk.Frame):
 
     def defaultLabel(self):
         self.mainFrame = ttk.Label(self, text="Preview Window\nDouble Click to Preview Item", anchor=tk.CENTER, compound="top")
-        self.mainFrame.imagePath = os.path.dirname(os.path.realpath(__file__)) + "/Images/Logo.png"
+        self.mainFrame.imagePath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Images/Logo.png")
         self.mainFrame.image = loadImage(self.mainFrame.imagePath, (256, 256))
         self.mainFrame.configure(image=self.mainFrame.image)
         self.mainFrame.pack(padx=5, pady=5, expand=True, fill=tk.BOTH)
@@ -318,8 +318,8 @@ class DirectoryWindow(tk.Frame):
         self.root = root
         self.rootDir = root.rootDir
         self.tree = ttk.Treeview(self)
-        self.openImg = getSVG("/Images/icons/folder-open.svg")
-        self.closeImg = getSVG("/Images/icons/folder.svg")
+        self.openImg = getSVG("Images/icons/folder-open.svg")
+        self.closeImg = getSVG("Images/icons/folder.svg")
         self.errorImg = self.defaultDictValue()
         self.tree.heading('#0', text=self.rootDir.directory, anchor='w')
         self.rootNode = self.tree.insert("", "end", text=self.rootDir.directory, open=True, image=self.openImg)
@@ -364,7 +364,7 @@ class DirectoryWindow(tk.Frame):
         self.tree.item(self.tree.focus(), image=self.closeImg)
 
     def defaultDictValue(self):
-        return getSVG("/Images/icons/alert-octagon.svg")
+        return getSVG("Images/icons/alert-octagon.svg")
 
     def updatePreview(self, event):
         # This method updates the preview.
