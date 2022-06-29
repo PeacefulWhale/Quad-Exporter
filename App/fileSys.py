@@ -43,7 +43,7 @@ class FileDir:
             # I could have done this recursively, but this works as well.
             fullDir = ""
             for dir in dirs:
-                fullDir += "/" + dir
+                fullDir = os.path.join(fullDir, dir)
                 current.size += size
                 matches = list(filter(lambda x: x.directory == dir, current.children))
                 # there should only be one, or zero, matches, however if there are more then we've done something wrong.
@@ -60,7 +60,7 @@ class FileDir:
                     raise Exception("Identical Directories Created. Please file a bug report.")
                 current = childItem
             # We've gotten to the final item now.
-            file = FileItem(childFile, self.resPath + "/" + truePath, fullDir, size)
+            file = FileItem(childFile, os.path.join(self.resPath, truePath), fullDir, size)
             if len(self.enabled) == 0 or file.fileExt in self.enabled:
                 current.itemCount += 1
                 current.files.append(file)
@@ -87,6 +87,7 @@ class FileItem():
 
         # Easy case, file to its own file type:
         if self.fileExt == os.path.split(dest)[1]:
-            with open(self.truePath, "rb") as bytes:
-                with open(dest, "wb") as output:
-                    output.write(bytes)
+            if os.path.exists(self.truePath):
+                with open(self.truePath, "rb") as bytes:
+                    with open(dest, "wb") as output:
+                        output.write(bytes)

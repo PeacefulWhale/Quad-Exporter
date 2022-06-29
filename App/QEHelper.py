@@ -100,7 +100,7 @@ def loadText(file: str):
 def getSVG(file: str):
     # Gets our SVG, renders it, and returns an image type compatible with Tkinter.
     # Also inverts the colors if we're on darkmode.
-    file = os.path.dirname(os.path.realpath(__file__)) + "/" + file
+    file = os.path.join(os.path.dirname(os.path.realpath(__file__)), file)
     image = svg2png(url=file, scale=.75, dpi=250)
     image = Image.open(io.BytesIO(image))
     # Resize by saving a temp image.
@@ -132,7 +132,7 @@ def parseIndex(root: tk.Tk, filePath: str, resPath: str, enabled: list = []):
     bar = ttk.Progressbar(pop, length=200, mode="determinate", orient=tk.HORIZONTAL)
     bar.pack(padx=10, pady=10)
     image = tk.Label(pop, text="Quad-Exporter", anchor=tk.CENTER, justify=tk.CENTER, font=("Arial", 30), compound="left")
-    image.imagePath = os.path.dirname(os.path.realpath(__file__)) + "/Images/Logo.png"
+    image.imagePath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Images/Logo.png")
     image.image = loadImage(image.imagePath, (32, 32))
     image.configure(image=image.image)
     image.pack(anchor=tk.CENTER, expand=True, fill=tk.BOTH)
