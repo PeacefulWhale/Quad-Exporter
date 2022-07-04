@@ -37,7 +37,7 @@ def indexMenu(root: tk.Tk):
 def main():
     # Some variables for later
     global resPath, savedPaths, indexPath
-    savedPaths = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref/savedPaths.txt")
+    savedPaths = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref", "savedPaths.txt")
     # Create the main window.
     root = tk.Tk()
     root.title("Quad-Exporter")
@@ -46,7 +46,7 @@ def main():
     # root.state("zoomed")
     # Load Preferences
     try:
-        with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref/enabled.txt")) as file:
+        with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref", "enabled.txt")) as file:
             for line in file.readlines():
                 line = line.strip()
                 if len(line) > 0 and line[0] != "#":
