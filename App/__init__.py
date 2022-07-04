@@ -37,16 +37,16 @@ def indexMenu(root: tk.Tk):
 def main():
     # Some variables for later
     global resPath, savedPaths, indexPath
-    savedPaths = os.path.dirname(os.path.realpath(__file__)) + "/pref/savedPaths.txt"
+    savedPaths = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref/savedPaths.txt")
     # Create the main window.
     root = tk.Tk()
     root.title("Quad-Exporter")
-    root.minsize(750, 500)
+    root.minsize(800, 600)
     root.tk.call('tk', 'scaling', 2.0)
     # root.state("zoomed")
     # Load Preferences
     try:
-        with open(os.path.dirname(os.path.realpath(__file__)) + "/pref/enabled.txt") as file:
+        with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref/enabled.txt")) as file:
             for line in file.readlines():
                 line = line.strip()
                 if len(line) > 0 and line[0] != "#":
@@ -101,7 +101,7 @@ def main():
     # Root gird configure.
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=5)
-    root.rowconfigure(0, weight=20)
+    root.rowconfigure(0, weight=5)
     root.rowconfigure(1, weight=1)
 
     # Menu Commands.

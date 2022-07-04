@@ -7,64 +7,13 @@ from fileSys import *
 from QEHelper import *
 from collections import defaultdict
 import shutil
+import json
+from convert import convert
+import platform
 
 # All extensions
 extensions = ("ALL FILES", ".gr2", ".black", ".static", ".fsdbinary", ".json", ".xml", ".yaml", ".prs", ".bnk", ".wem", ".jpg", ".dds", ".png", ".webm", ".txt", ".py", ".gsf", ".srt", ".pathdata", ".region", ".pickle", ".css", ".tri", ".mp4", ".mp3")
 icons = ("files", "box", "file-digit", "file-digit", "file-digit", "file-code", "file-code", "file-code", "file-input", "music", "music", "image", "image", "image", "youtube", "file-text", "file-code", "file-code", "message-circle", "map", "map", "file-digit", "file-code", "box", "youtube", "music")
-
-
-class VideoPlayer():
-    # I'm just sticking this here so I don't forget it.
-    # TODO:
-    # Add all functionality lol.
-    def __init__(self, root: tk.Tk, videoFile: str = "", **kwargs):
-        super(VideoPlayer, self).__init__(**kwargs)
-        self.root = root
-        # The path to the video to display.
-        self.videoFile = videoFile
-        
-        # Get images for buttons.
-        self.playImg = getSVG("Images/icons/play.svg")
-        self.stopImg = getSVG("Images/icons/pause.svg")
-        self.volumeImg = [getSVG("Images/icons/volume-2.svg"),
-                          getSVG("Images/icons/volume-1.svg"),
-                          getSVG("Images/icons/volume.svg")]
-        self.mutedImg = getSVG("Images/icons/volume-x.svg")
-
-        # Set up buttons / button frames.
-        self.volume = 100
-        self.bottons = ttk.Frame(self)
-        self.playBotton = ttk.Button(self.bottons, image=self.stopImg, command=self.playToggle)
-        self.volumeBotton = ttk.Button(self.bottons, image=self.volumeImg[0], command=self.muteToggle)
-        self.stopped = False
-        self.muted = False
-
-
-    def getVolumeImage(self):
-        if self.volume >= 66.66:
-            return self.volumeImg[0]
-        elif self.volume >= 33.33:
-            return self.volumeImg[1]
-        else:
-            return self.volumeImg[2]
-
-    def playToggle(self):
-        if self.stopped:
-            # Start playing again.
-            self.playBotton.configure(image=self.stopImg)
-        else:
-            # Stop playing.
-            self.playBotton.configure(image=self.playImg)
-        self.stopped = not self.stopped
-
-    def muteToggle(self):
-        if self.muted:
-            # Unmute the audio / video.
-            self.volumeBotton.configure(image=self.volumeImg[0])
-        else:
-            # Set up the volume again properly
-            self.volumeBotton.configure(image=self.mutedImg)
-        self.muted = not self.muted
 
 
 def CreateToolTip(widget, text):
@@ -112,8 +61,8 @@ class ExportWindow(tk.Frame):
     def __init__(self, root: tk.Tk, **kwargs):
         super(ExportWindow, self).__init__(**kwargs)
         self.root = root
-        self.extensionSelection = ttk.Treeview(self, selectmode=tk.BROWSE, height=5)
         self.pack_propagate(False)
+        self.extensionSelection = ttk.Treeview(self, selectmode=tk.BROWSE)
         self.extensionSelection.pack_propagate(False)
 
         # Load images.
@@ -127,9 +76,24 @@ class ExportWindow(tk.Frame):
             self.imageDict[ext] = getSVG("Images/icons/" + icon + ".svg")
             # Also load Extension Selection.
             self.extensionSelection.insert("", "end", text=ext, open=True, image=self.imageDict[ext])
-        self.extensionSelection.heading('#0', text="Export Options")
-        self.extensionSelection.configure
-        self.extensionSelection.grid(column=0, row=0, columnspan=1, rowspan=2, sticky="NWS", padx=20, pady=(0, 15))
+        self.extensionSelection.heading("#0", text="Export Options")
+        # This is how we update the conversionSettings treeview.
+        self.extensionSelection.selection_set(self.extensionSelection.get_children()[0])
+        self.key = "ALL FILES"
+
+        # Extensions Conversion Window
+        self.extensionConversion = ttk.Treeview(self, selectmode=tk.BROWSE)
+        self.extensionConversion.pack_propagate(False)
+        # Load Settings
+        self.settingsPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref/conversions.json")
+        with open(self.settingsPath, "r") as file:
+            self.conversionSettings = json.load(file)
+        self.extensionConversion.heading("#0", text="Export To...")
+        self.updateConversionState(None)
+
+        # Update Bindings.
+        self.extensionSelection.bind("<<TreeviewSelect>>", self.updateConversionView)
+        self.extensionConversion.bind("<<TreeviewSelect>>", self.updateConversionState)
 
         # Load export options.
         self.keepHierarchy = tk.BooleanVar(value=True)
@@ -137,7 +101,7 @@ class ExportWindow(tk.Frame):
         self.childrenDirectories = tk.BooleanVar(value=True)
         # Botton Frame.
         self.bottonFrame = ttk.Frame(self)
-        self.bottonFrame.grid(column=1, row=0, sticky="NE", columnspan=1, rowspan=1, padx=(0, 15))
+
         # The actual bottons.
         self.heirBotton = ttk.Checkbutton(self.bottonFrame, text="Keep Folder Hierarchy", variable=self.keepHierarchy, onvalue=True, offvalue=False)
         self.heirMSG = """
@@ -146,12 +110,14 @@ class ExportWindow(tk.Frame):
         If disabled, only the file will be exported (and selected folders).
         """
         CreateToolTip(self.heirBotton, text=self.heirMSG)
+
         self.childFileBotton = ttk.Checkbutton(self.bottonFrame, text="Export Child Files", variable=self.childrenFiles, onvalue=True, offvalue=False)
         self.childFileMSG = """
         If enabled, the children files inside of selected folders will be exported.
         This does not include the children files inside of subdirectories.
         """
         CreateToolTip(self.childFileBotton, text=self.childFileMSG)
+
         self.childDirBotton = ttk.Checkbutton(self.bottonFrame, text="Export Subdirecotries", variable=self.childrenDirectories, onvalue=True, offvalue=False)
         self.childDirMSG = """
         If enabled, the subdirectories will be exported.
@@ -161,25 +127,59 @@ class ExportWindow(tk.Frame):
         If the "Keep Folder Hierarchy" is not enabled, you will end up with copies if you have multiple directories selected!
         """
         CreateToolTip(self.childDirBotton, text=self.childDirMSG)
-        # Pack them in the botton frame.
-        self.heirBotton.grid(column=0, row=0, sticky="W")
-        self.childFileBotton.grid(column=0, row=1, sticky="W")
-        self.childDirBotton.grid(column=0, row=2, sticky="W")
 
-        # Load export buttons.
-        # TODO: Add more export bottons?
-        self.exportBotton = ttk.Button(self, text="Export Selected", command=self.export)
-        self.exportBotton.grid(column=1, row=1, pady=15, padx=15, stick="SE")
+        # Pack the frames.
+        self.extensionSelection.grid(column=0, row=0, columnspan=1, rowspan=1, sticky="NESW", padx=5, pady=5)
+        self.extensionConversion.grid(column=1, row=0, columnspan=1, rowspan=1, sticky="NESW", padx=5, pady=5)
+        self.bottonFrame.grid(column=2, row=0, columnspan=1, rowspan=1, sticky="NESW", padx=5, pady=5)
 
         # Grid configure.
         self.columnconfigure(0, weight=2)
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=4)
+
+        # TODO: Add more export bottons?
+        self.exportBotton = ttk.Button(self.bottonFrame, text="Export Selected", command=self.export)
+
+        # Pack the buttons in the botton frame.
+        self.heirBotton.grid(column=0, row=0, sticky="W")
+        self.childFileBotton.grid(column=0, row=1, sticky="W")
+        self.childDirBotton.grid(column=0, row=2, sticky="W")
+        self.exportBotton.grid(column=0, row=3, stick="W")
+
+
+    def updateConversionView(self, event):
+        self.extensionConversion.delete(*self.extensionConversion.get_children())
+        self.key = self.extensionSelection.focus()
+        self.key = self.extensionSelection.item(self.key)
+        self.key = self.key["text"]
+        if self.key == None or len(self.key) == 0:
+            self.key = "ALL FILES"
+        for option in self.conversionSettings[self.key]["Options"]:
+            self.extensionConversion.insert("", "end", text=option)
+        state = self.conversionSettings[self.key]["State"]
+        stateIndex = self.conversionSettings[self.key]["Options"].index(state)
+        self.extensionConversion.selection_set(self.extensionConversion.get_children()[stateIndex])
+
+    def updateConversionState(self, event):
+        state = self.extensionConversion.focus()
+        state = self.extensionConversion.item(state)
+        state = state["text"]
+        if len(state) == 0:
+            state = "As Is"
+
+        # Error Handling
+        if self.key == ".gr2" and state == ".obj":
+            if platform.system() != "Windows":
+                warn(self.root, "Exporting .gr2 files to .obj is currently only supported on Windows!")
+                state = "As Is"
+
+        # Save the settings into the json file.
+        self.conversionSettings[self.key]["State"] = state
+        with open(self.settingsPath, "w") as file:
+            json.dump(self.conversionSettings, file, indent="     ")
 
     def export(self):
-        # TODO:
-        # Add in all the export options instead of just directly copying files.
         self.exportPath = filedialog.askdirectory(parent=self, initialdir="/", title="Please select the export path.", mustexist=True)
         # Go through all of the selected items.
         for item in self.root.selected:
@@ -193,16 +193,18 @@ class ExportWindow(tk.Frame):
             else:
                 self.exportFolder(item, itemPath)
 
+    # TODO:
+    # Add in all the export options.
     def exportFile(self, item, itemPath):
         print(f"Saving {item.path} to {itemPath}")
         if not os.path.exists(itemPath):
             os.makedirs(itemPath)
-        fullItemPath = itemPath + "/" + item.path
-        if not os.path.exists(fullItemPath):
-            shutil.copy(item.truePath, fullItemPath)
+        fullItemPath = os.path.join(itemPath, item.path)
+        # Call our convert.py function to handle file conversion.
+        convert(item.truePath, fullItemPath, self.conversionSettings)
 
     def exportFolder(self, item, itemPath):
-        itemPath += "/" + item.directory
+        itemPath = os.path.join(itemPath, item.directory)
         # See if we have to keep going down and exporting the file's children (and/or it's sub0directories).
         if self.childrenFiles.get():
             for child in item.files:
@@ -274,6 +276,7 @@ class PreviewWindow(tk.Frame):
                     if isImage(self.selected):
                         self.frames.append(self.imagePreview())
                     # Text preview.
+                    # TODO: Add syntax highlighting.
                     elif isText(self.selected):
                         self.frames.append(self.textPreview(isText(self.selected)))
                     # Default (Just display file characteristics).

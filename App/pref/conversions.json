@@ -1,0 +1,159 @@
+{
+     "ALL FILES": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".gr2": {
+          "Options": [
+               "As Is",
+               ".obj"
+          ],
+          "State": "As Is"
+     },
+     ".black": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".static": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".fsdbinary": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".json": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".xml": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".yaml": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".prs": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".bnk": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".wem": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".jpg": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".dds": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".png": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".webm": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".txt": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".py": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".gsf": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".srt": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".pathdata": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".region": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".pickle": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".css": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".tri": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".mp4": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     },
+     ".mp3": {
+          "Options": [
+               "As Is"
+          ],
+          "State": "As Is"
+     }
+}
