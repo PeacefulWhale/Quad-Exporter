@@ -6,7 +6,6 @@ from tkinter import filedialog
 from fileSys import *
 from QEHelper import *
 from collections import defaultdict
-import shutil
 import json
 from convert import convert
 import platform

@@ -4,8 +4,17 @@ from tkinter import ttk
 from tkinter import filedialog
 from functools import partial
 from fileSys import FileDir, FileItem
-from cairosvg import svg2png
-from PIL import ImageTk, Image, ImageOps
+svg_enabled = False
+try:
+    from cairosvg import svg2png
+    svg_enabled = True
+except:
+    print("Cannot find module cairosvg. Icons will not be rendered.")
+pil_enabled = False
+try:
+    from PIL import ImageTk, Image, ImageOps
+except:
+    print("Cannot find module PIL. Images will not be rendered.")
 # Stuff for cross platform dark mode.
 import io
 import subprocess
@@ -35,7 +44,10 @@ def isText(dir: "FileItem"):
 
 def isImage(dir: "FileItem"):
     # For some function things...
-    return (dir.fileExt == ".png" or dir.fileExt == ".jpg" or dir.fileExt == ".dds")
+    if pil_enabled:
+        return (dir.fileExt == ".png" or dir.fileExt == ".jpg" or dir.fileExt == ".dds")
+    else:
+        return False
 
 
 def countItems(dir: "FileDir"):
@@ -78,6 +90,8 @@ def windowsDark():
 
 
 def loadImage(file: str, size: tuple[int, int]):
+    if pil_enabled == False:
+        return None
     # Loads the image so we can use it in preview.
     # UTILIZES THE TRUE PATH
     image = Image.open(file)
@@ -98,6 +112,8 @@ def loadText(file: str):
 
 
 def getSVG(file: str):
+    if svg_enabled == False:
+        return None
     # Gets our SVG, renders it, and returns an image type compatible with Tkinter.
     # Also inverts the colors if we're on darkmode.
     file = os.path.join(os.path.dirname(os.path.realpath(__file__)), file)
