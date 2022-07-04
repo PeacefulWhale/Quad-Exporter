@@ -200,7 +200,7 @@ class ExportWindow(tk.Frame):
             os.makedirs(itemPath)
         fullItemPath = os.path.join(itemPath, item.path)
         # Call our convert.py function to handle file conversion.
-        convert(item.truePath, fullItemPath, self.conversionSettings)
+        convert(item.truePath, fullItemPath, self.conversionSettings, self.root)
 
     def exportFolder(self, item, itemPath):
         itemPath = os.path.join(itemPath, item.directory)
