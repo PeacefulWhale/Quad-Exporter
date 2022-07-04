@@ -72,7 +72,7 @@ class ExportWindow(tk.Frame):
         zipped = sorted(zipped, key=lambda x: x[1])
         zipped.insert(0, (extensions[0], icons[0]))
         for ext, icon in zipped:
-            self.imageDict[ext] = getSVG("Images/icons/" + icon + ".svg")
+            self.imageDict[ext] = getSVG(os.path.join("Images", "icons", f"{icon}.svg"))
             # Also load Extension Selection.
             self.extensionSelection.insert("", "end", text=ext, open=True, image=self.imageDict[ext])
         self.extensionSelection.heading("#0", text="Export Options")
@@ -84,7 +84,7 @@ class ExportWindow(tk.Frame):
         self.extensionConversion = ttk.Treeview(self, selectmode=tk.BROWSE)
         self.extensionConversion.pack_propagate(False)
         # Load Settings
-        self.settingsPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref/conversions.json")
+        self.settingsPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "pref", "conversions.json")
         with open(self.settingsPath, "r") as file:
             self.conversionSettings = json.load(file)
         self.extensionConversion.heading("#0", text="Export To...")
@@ -224,7 +224,7 @@ class PreviewWindow(tk.Frame):
 
     def defaultLabel(self):
         self.mainFrame = ttk.Label(self, text="Preview Window\nDouble Click to Preview Item", anchor=tk.CENTER, compound="top")
-        self.mainFrame.imagePath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Images/Logo.png")
+        self.mainFrame.imagePath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Images", "Logo.png")
         self.mainFrame.image = loadImage(self.mainFrame.imagePath, (256, 256))
         self.mainFrame.configure(image=self.mainFrame.image)
         self.mainFrame.pack(padx=5, pady=5, expand=True, fill=tk.BOTH)
@@ -314,14 +314,14 @@ class DirectoryWindow(tk.Frame):
         global extensions
         global icons
         for ext, icon in zip(extensions, icons):
-            self.imageDict[ext] = getSVG("Images/icons/" + icon + ".svg")
+            self.imageDict[ext] = getSVG(os.path.join("Images", "icons", f"{icon}.svg"))
         # If you notice file formats I didn't please add them!
         # Feel free to suggest better icons and stuff too!
         self.root = root
         self.rootDir = root.rootDir
         self.tree = ttk.Treeview(self)
-        self.openImg = getSVG("Images/icons/folder-open.svg")
-        self.closeImg = getSVG("Images/icons/folder.svg")
+        self.openImg = getSVG(os.path.join("Images", "icons", "folder-open.svg"))
+        self.closeImg = getSVG(os.path.join("Images", "icons", "folder.svg"))
         self.errorImg = self.defaultDictValue()
         self.tree.heading('#0', text=self.rootDir.directory, anchor='w')
         self.rootNode = self.tree.insert("", "end", text=self.rootDir.directory, open=True, image=self.openImg)
@@ -366,7 +366,7 @@ class DirectoryWindow(tk.Frame):
         self.tree.item(self.tree.focus(), image=self.closeImg)
 
     def defaultDictValue(self):
-        return getSVG("Images/icons/alert-octagon.svg")
+        return getSVG(os.path.join("Images", "icons", "alert-octagon.svg"))
 
     def updatePreview(self, event):
         # This method updates the preview.
