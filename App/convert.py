@@ -23,7 +23,7 @@ def convert(truePath: str, fullItemPath: str, settings: dict, root: tk.Tk):
             # Let's use Tamber's tool to convert our gr2 into an OBJ.
             tamberToolPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "TamberTool", "evegr2toobj.exe")
             try:
-                os.system(f"{tamberToolPath} {truePath} {fullItemPath}")
+                os.system(f"{tamberToolPath} \"{truePath}\" \"{fullItemPath}\"")
                 return 1
             except:
                 warn(root, "Issue with Tamber Tool... Ask Hoed for help.")

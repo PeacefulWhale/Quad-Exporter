@@ -146,7 +146,6 @@ class ExportWindow(tk.Frame):
         self.childDirBotton.grid(column=0, row=2, sticky="W")
         self.exportBotton.grid(column=0, row=3, stick="W")
 
-
     def updateConversionView(self, event):
         self.extensionConversion.delete(*self.extensionConversion.get_children())
         self.key = self.extensionSelection.focus()
@@ -164,19 +163,19 @@ class ExportWindow(tk.Frame):
         state = self.extensionConversion.focus()
         state = self.extensionConversion.item(state)
         state = state["text"]
+        # No item selected, read from the saved file.
         if len(state) == 0:
-            state = "As Is"
-
-        # Error Handling
-        if self.key == ".gr2" and state == ".obj":
-            if platform.system() != "Windows":
-                warn(self.root, "Exporting .gr2 files to .obj is currently only supported on Windows!")
-                state = "As Is"
-
-        # Save the settings into the json file.
-        self.conversionSettings[self.key]["State"] = state
-        with open(self.settingsPath, "w") as file:
-            json.dump(self.conversionSettings, file, indent="     ")
+            state = self.conversionSettings[self.key]["State"]
+        else:
+            # Error Handling
+            if self.key == ".gr2" and state == ".obj":
+                if platform.system() != "Windows":
+                    warn(self.root, "Exporting .gr2 files to .obj is currently only supported on Windows!")
+                    state = "As Is"
+            # Save the settings into the json file.
+            self.conversionSettings[self.key]["State"] = state
+            with open(self.settingsPath, "w") as file:
+                json.dump(self.conversionSettings, file, indent="     ")
 
     def export(self):
         self.exportPath = filedialog.askdirectory(parent=self, initialdir="/", title="Please select the export path.", mustexist=True)

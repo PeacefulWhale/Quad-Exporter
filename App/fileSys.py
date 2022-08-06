@@ -2,9 +2,8 @@ import os
 
 
 def _cleanPath(filepath: str):
-    # There is a problem... The ":" causes problems on macOS... But it's needed for the windows directory stuff...
-    # I hope I've fixed this by using os.path.join... We'll see...
-    illegalChars = ""
+    # I have no clue if this will work...
+    illegalChars = "<>:\"|?*"
     for char in illegalChars:
         filepath = filepath.replace(char, "")
     return filepath
