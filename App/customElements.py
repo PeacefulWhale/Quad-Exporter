@@ -183,7 +183,7 @@ class ExportWindow(tk.Frame):
         for item in self.root.selected:
             itemPath = self.exportPath
             if self.keepHierarchy.get():
-                itemPath += item.fullPath
+                itemPath = os.path.join(itemPath, item.fullPath)
             # Save the item.
             if isinstance(item, FileItem):
                 # Add the file.

@@ -3,10 +3,13 @@ import os
 
 def _cleanPath(filepath: str):
     # I have no clue if this will work...
-    illegalChars = "<>:\"|?*"
-    for char in illegalChars:
-        filepath = filepath.replace(char, "")
-    return filepath
+    # How do I handle Window's C:/?
+    # illegalChars = "<>:\"|?*"
+    # Okay here's the plan... We let individuals enter in bad filepaths, and treat that as user error and thereby avoidable.
+    # I'll just focus on handling CCP's strange choice of using "res:"
+    # for char in illegalChars:
+    #     filepath = filepath.replace(char, "")
+    return filepath.replace("res:", "res")
 
 
 class FileDir:
