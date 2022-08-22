@@ -20,6 +20,7 @@ except:
 import io
 import subprocess
 import platform
+import json
 
 
 def isText(dir: "FileItem"):
@@ -157,21 +158,36 @@ def parseIndex(root: tk.Tk, filePath: str, resPath: str, enabled: list = []):
     max = os.path.getsize(filePath)
     current = 0
     currentLine = 0
+
+    # We have to handle audio files (.wem files at least) a little differently.
+    audio = {}
+    soundBank = ""
+
     # Go through files and append them to our rootDir.
     with open(filePath, "r") as file:
         for line in file.readlines():
             data = line.split(",")
             # Add the current line to the root Directory.
-            rootDir.add(data[0], data[1], int(data[3], base=10))
-            # Updating the progress bar.
+            if ".wem" in data[0]:
+                audio[os.path.basename(data[0])[:-4]] = list(data)
+            else:
+                if "soundbanksinfo.json" in data[0]:
+                    soundBank = data[1]
+                rootDir.add(data[0], data[1], int(data[3], base=10))
+                # Updating the progress bar.
             current += len(line)
             currentLine += 1
             if currentLine - 2500 == 0:
                 currentLine = 0
                 bar["value"] = (100 * (current / max))
                 pop.update()
-        pop.destroy()
-    countItems(rootDir)
+    # Now that we have our audio files and the soundbanksinfo file path, it's time to parse them.
+    with open(os.path.join(resPath, soundBank)) as soundBank:
+        soundBank = json.load(soundBank)
+        soundFiles = soundBank["SoundBanksInfo"]["StreamedFiles"]
+        for soundFile in soundFiles:
+            rootDir.add(os.path.join(os.path.dirname(audio[soundFile["Id"]][0]), *soundFile["Path"].split("\\")), audio[soundFile["Id"]][1], int(audio[soundFile["Id"]][3], base=10))
+    pop.destroy()
     return rootDir
 
 
