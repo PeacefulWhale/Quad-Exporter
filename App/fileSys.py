@@ -74,19 +74,3 @@ class FileItem():
         self.size = size
         self.fullPath = _cleanPath(fullPath)
         self.fileExt = os.path.splitext(self.path)[1]
-
-    def convert(self, dest: str):
-        dest = _cleanPath(dest)
-        # This is not going to be a fun function to work through... That's for sure...
-        # TODO:
-        # GR2 -> 3D File Formats
-        # Images -> Images
-        # Sound Files -> Sound Files
-        # Data Files -> JSON
-
-        # Easy case, file to its own file type:
-        if self.fileExt == os.path.split(dest)[1]:
-            if os.path.exists(self.truePath):
-                with open(self.truePath, "rb") as bytes:
-                    with open(dest, "wb") as output:
-                        output.write(bytes)
