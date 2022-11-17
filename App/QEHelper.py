@@ -191,7 +191,7 @@ def parseIndex(root: tk.Tk, filePath: str, resPath: str, enabled: list = []):
             soundBank = json.load(soundBank)
             soundFiles = soundBank["SoundBanksInfo"]["StreamedFiles"]
             for soundFile in soundFiles:
-                rootDir.add(os.path.join(os.path.dirname(audio[soundFile["Id"]][0]), *soundFile["Path"].split("\\")), audio[soundFile["Id"]][1], int(audio[soundFile["Id"]][3], base=10))
+                rootDir.add(os.path.join(os.path.dirname(audio[soundFile["Id"]][0]), *soundFile["Path"].split(os.sep)), audio[soundFile["Id"]][1], int(audio[soundFile["Id"]][3], base=10))
     except:
         print("Could not find soundbank... Is your cache verified?")
     pop.destroy()
