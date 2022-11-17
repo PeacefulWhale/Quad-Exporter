@@ -1,158 +1,185 @@
 {
      "ALL FILES": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Follow Individual Options",
+               "Do Not Export"
           ],
-          "State": "As Is"
+          "State": "Do Not Export"
      },
      ".gr2": {
           "Options": [
                "As Is",
-               ".obj"
+               ".obj",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".black": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".static": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".fsdbinary": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".json": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".xml": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".yaml": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".prs": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".bnk": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".wem": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".jpg": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".dds": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".png": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".webm": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".txt": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".py": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".gsf": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".srt": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".pathdata": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".region": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".pickle": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".css": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".tri": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".mp4": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      },
      ".mp3": {
           "Options": [
-               "As Is"
+               "As Is",
+               "Do Not Export"
           ],
           "State": "As Is"
      }

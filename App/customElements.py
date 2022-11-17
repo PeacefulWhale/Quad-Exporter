@@ -183,7 +183,7 @@ class ExportWindow(tk.Frame):
         for item in self.root.selected:
             itemPath = self.exportPath
             if self.keepHierarchy.get():
-                itemPath = os.path.join(itemPath, item.fullPath)
+                itemPath = os.path.join(os.path.dirname(itemPath), item.fullPath)
             # Save the item.
             if isinstance(item, FileItem):
                 # Add the file.
@@ -195,14 +195,11 @@ class ExportWindow(tk.Frame):
     # Add in all the export options.
     def exportFile(self, item, itemPath):
         print(f"Saving {item.path} to {itemPath}")
-        if not os.path.exists(itemPath):
-            os.makedirs(itemPath)
         fullItemPath = os.path.join(itemPath, item.path)
         # Call our convert.py function to handle file conversion.
         convert(item.truePath, fullItemPath, self.conversionSettings, self.root)
 
     def exportFolder(self, item, itemPath):
-        itemPath = os.path.join(itemPath, item.directory)
         # See if we have to keep going down and exporting the file's children (and/or it's sub0directories).
         if self.childrenFiles.get():
             for child in item.files:

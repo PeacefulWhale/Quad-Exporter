@@ -5,17 +5,19 @@ from tkinter import filedialog
 from functools import partial
 from fileSys import FileDir, FileItem
 svg_enabled = False
+pil_enabled = False
 try:
     from cairosvg import svg2png
     svg_enabled = True
 except:
     print("Cannot find module cairosvg. Icons will not be rendered.")
-pil_enabled = False
+    svg_enabled = False
 try:
-    pil_enabled = True
     from PIL import ImageTk, Image, ImageOps
+    pil_enabled = True
 except:
     print("Cannot find module PIL. Images will not be rendered.")
+    pil_enabled = False
 # Stuff for cross platform dark mode.
 import io
 import subprocess
@@ -60,7 +62,9 @@ def countItems(dir: "FileDir"):
     return count
 
 
-def invert(image: Image):
+def invert(image):
+    if not pil_enabled:
+        return ""
     # Inverts our RGBA SVG renders.
     r, g, b, a = image.split()
     rgb_image = Image.merge('RGB', (r, g, b))
@@ -182,11 +186,14 @@ def parseIndex(root: tk.Tk, filePath: str, resPath: str, enabled: list = []):
                 bar["value"] = (100 * (current / max))
                 pop.update()
     # Now that we have our audio files and the soundbanksinfo file path, it's time to parse them.
-    with open(os.path.join(resPath, soundBank)) as soundBank:
-        soundBank = json.load(soundBank)
-        soundFiles = soundBank["SoundBanksInfo"]["StreamedFiles"]
-        for soundFile in soundFiles:
-            rootDir.add(os.path.join(os.path.dirname(audio[soundFile["Id"]][0]), *soundFile["Path"].split("\\")), audio[soundFile["Id"]][1], int(audio[soundFile["Id"]][3], base=10))
+    try:
+        with open(os.path.join(resPath, soundBank)) as soundBank:
+            soundBank = json.load(soundBank)
+            soundFiles = soundBank["SoundBanksInfo"]["StreamedFiles"]
+            for soundFile in soundFiles:
+                rootDir.add(os.path.join(os.path.dirname(audio[soundFile["Id"]][0]), *soundFile["Path"].split("\\")), audio[soundFile["Id"]][1], int(audio[soundFile["Id"]][3], base=10))
+    except:
+        print("Could not find soundbank... Is your cache verified?")
     pop.destroy()
     return rootDir
 
