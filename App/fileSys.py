@@ -9,7 +9,7 @@ def _cleanPath(filepath: str):
     # I'll just focus on handling CCP's strange choice of using "res:"
     # for char in illegalChars:
     #     filepath = filepath.replace(char, "")
-    return filepath.replace("res:", "res")
+    return os.path.normpath(filepath.replace("res:", "res"))
 
 
 class FileDir:
@@ -32,39 +32,36 @@ class FileDir:
         # Create new fileSys items if needed.
         child = _cleanPath(child)
         truePath = _cleanPath(truePath)
-        if (child.startswith(self.directory)):
-            dirs = child.removeprefix(self.directory).split('/')
-            # Get the name of the file.
-            childFile = dirs[-1]
-            # Cut out the name of the file.
-            dirs = dirs[0:-1]
-            current = self
-            # I could have done this recursively, but this works as well.
-            fullDir = ""
-            for dir in dirs:
-                fullDir = os.path.join(fullDir, dir)
-                current.size += size
-                matches = list(filter(lambda x: x.directory == dir, current.children))
-                # there should only be one, or zero, matches, however if there are more then we've done something wrong.
-                childItem = None
-                if len(matches) == 0:
-                    # We need to create a new fileItem.
-                    childItem = FileDir(self.resPath, current, dir, fullDir, self.enabled)
-                    current.children.append(childItem)
-                    pass
-                elif len(matches) == 1:
-                    # Update the current location on our fileItem tree.
-                    childItem = matches[0]
-                else:
-                    raise Exception("Identical Directories Created. Please file a bug report.")
-                current = childItem
-            # We've gotten to the final item now.
-            file = FileItem(childFile, os.path.join(self.resPath, truePath), fullDir, size)
-            if len(self.enabled) == 0 or file.fileExt in self.enabled:
-                current.itemCount += 1
-                current.files.append(file)
-        else:
-            raise Exception("Child Directory not part of Parent Directory!")
+        dirs = child.removeprefix(self.directory).split(os.sep)
+        # Get the name of the file.
+        childFile = dirs[-1]
+        # Cut out the name of the file.
+        dirs = dirs[0:-1]
+        current = self
+        # I could have done this recursively, but this works as well.
+        fullDir = ""
+        for dir in dirs:
+            fullDir = os.path.join(fullDir, dir)
+            current.size += size
+            matches = list(filter(lambda x: x.directory == dir, current.children))
+            # there should only be one, or zero, matches, however if there are more then we've done something wrong.
+            childItem = None
+            if len(matches) == 0:
+                # We need to create a new fileItem.
+                childItem = FileDir(self.resPath, current, dir, fullDir, self.enabled)
+                current.children.append(childItem)
+                pass
+            elif len(matches) == 1:
+                # Update the current location on our fileItem tree.
+                childItem = matches[0]
+            else:
+                raise Exception("Identical Directories Created. Please file a bug report.")
+            current = childItem
+        # We've gotten to the final item now.
+        file = FileItem(childFile, os.path.join(self.resPath, truePath), fullDir, size)
+        if len(self.enabled) == 0 or file.fileExt in self.enabled:
+            current.itemCount += 1
+            current.files.append(file)
 
 
 class FileItem():
