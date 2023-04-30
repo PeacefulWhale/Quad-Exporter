@@ -178,35 +178,32 @@ class ExportWindow(tk.Frame):
                 json.dump(self.conversionSettings, file, indent="     ")
 
     def export(self):
-        self.exportPath = filedialog.askdirectory(parent=self, initialdir="/", title="Please select the export path.", mustexist=True)
+        output_directory = filedialog.askdirectory(parent=self, initialdir="/", title="Please select the export path.", mustexist=True)
         # Go through all of the selected items.
         for item in self.root.selected:
-            itemPath = self.exportPath
             if self.keepHierarchy.get():
-                itemPath = os.path.join(os.path.dirname(itemPath), item.fullPath)
+                output_directory = os.path.join(output_directory, item.fullPath)
             # Save the item.
             if isinstance(item, FileItem):
                 # Add the file.
-                self.exportFile(item, itemPath)
+                self.exportFile(item, output_directory)
             else:
-                self.exportFolder(item, itemPath)
+                self.exportFolder(item, output_directory)
 
-    # TODO:
-    # Add in all the export options.
-    def exportFile(self, item, itemPath):
-        print(f"Saving {item.path} to {itemPath}")
-        fullItemPath = os.path.join(itemPath, item.path)
+
+    def exportFile(self, item, output_directory):
+        full_item_path = os.path.join(output_directory, item.path)
         # Call our convert.py function to handle file conversion.
-        convert(item.truePath, fullItemPath, self.conversionSettings, self.root)
+        convert(item.truePath, full_item_path, self.conversionSettings, self.root)
 
-    def exportFolder(self, item, itemPath):
+    def exportFolder(self, item, output_directory):
         # See if we have to keep going down and exporting the file's children (and/or it's sub0directories).
         if self.childrenFiles.get():
             for child in item.files:
-                self.exportFile(child, itemPath)
+                self.exportFile(child, output_directory)
         if self.childrenDirectories.get():
             for child in item.children:
-                self.exportFolder(child, itemPath)
+                self.exportFolder(child, output_directory)
 
 
 class PreviewWindow(tk.Frame):

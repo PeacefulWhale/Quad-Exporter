@@ -3,10 +3,11 @@ import platform
 import shutil
 import tkinter as tk
 from QEHelper import warn
+import subprocess
 
 def convert(truePath: str, fullItemPath: str, settings: dict, root: tk.Tk):
     itemPath, fileExt = os.path.splitext(fullItemPath)
-    print(f"Exporting with: {truePath}, {fullItemPath}")
+    print(f"Exporting from {truePath} to {fullItemPath}")
 
     if settings["ALL FILES"]["State"] == "As Is":
         if not os.path.exists(fullItemPath):
@@ -30,19 +31,23 @@ def convert(truePath: str, fullItemPath: str, settings: dict, root: tk.Tk):
                     warn(root, "Exporting .gr2 files to .obj is currently only supported on Windows!")
                     return -1
                 # Create the directories for the file
-                if not os.path.exists(fullItemPath):
-                    os.makedirs(fullItemPath)
+                if not os.path.exists(os.path.dirname(fullItemPath)):
+                    os.makedirs(os.path.dirname(fullItemPath))
                 # Let's use Tamber's tool to convert our gr2 into an OBJ.
                 tamberToolPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "TamberTool", "evegr2toobj.exe")
                 try:
-                    os.system(f"{tamberToolPath} \"{truePath}\" \"{fullItemPath}\"")
+                    subprocess.run([
+                        tamberToolPath,
+                        truePath,
+                        fullItemPath
+                    ], shell=True)
                     return 1
                 except:
                     warn(root, "Issue with Tamber Tool... Ask Hoed for help.")
                     return -1
 
 def _copy(truePath, fullItemPath):
-    if not os.path.exists(fullItemPath):
-        os.makedirs(fullItemPath)
+    if not os.path.exists(os.path.dirname(fullItemPath)):
+        os.makedirs(os.path.dirname(fullItemPath))
     shutil.copy(truePath, fullItemPath)
     return 1
