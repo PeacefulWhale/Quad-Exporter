@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from functools import partial
 from fileSys import FileDir, FileItem
+
 svg_enabled = False
 pil_enabled = False
 try:
@@ -18,6 +19,7 @@ try:
 except:
     print("Cannot find module PIL. Images will not be rendered.")
     pil_enabled = False
+
 # Stuff for cross platform dark mode.
 import io
 import subprocess
@@ -43,9 +45,8 @@ def isText(dir: "FileItem"):
     else:
         return 0
 
+
 # if this is an image file.
-
-
 def isImage(dir: "FileItem"):
     # For some function things...
     if pil_enabled:
@@ -122,7 +123,7 @@ def getSVG(file: str):
         return ""
     # Gets our SVG, renders it, and returns an image type compatible with Tkinter.
     # Also inverts the colors if we're on darkmode.
-    file = os.path.join(os.path.dirname(os.path.realpath(__file__)), file)
+    file = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), file))
     image = svg2png(url=file, scale=.75, dpi=250)
     image = Image.open(io.BytesIO(image))
     # Resize by saving a temp image.
